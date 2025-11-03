@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XYZ Trading Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Login Page -->
+    <div class="login-container" id="loginContainer">
+        <div class="login-box">
+            <div class="login-logo">
+                <h1><i class="fas fa-chart-line"></i> XYZ Trading</h1>
+            </div>
+            <h2 class="login-title">Welcome Back</h2>
+            <p class="login-subtitle">Sign in to your trading account</p>
+            
+            <form class="login-form" id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username or Client ID</label>
+                    <input type="text" id="username" placeholder="Enter your username" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter your password" required>
+                </div>
+                
+                <div class="form-group remember-forgot">
+                    <div class="remember-me">
+                        <input type="checkbox" id="remember">
+                        <label for="remember">Remember me</label>
+                    </div>
+                    <a href="#" class="forgot-password">Forgot password?</a>
+                </div>
+                
+                <button type="submit" class="login-btn">Sign In</button>
+            </form>
+            
+            <div class="login-footer">
+                <p>Don't have an account? <a href="#">Open an account</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Container -->
+    <div class="dashboard-container" id="dashboardContainer">
+        <div class="container">
+            <!-- Desktop Sidebar -->
+            <div class="sidebar">
+                <div class="logo">
+                    <h1><i class="fas fa-chart-line"></i> XYZ</h1>
+                </div>
+                <ul class="nav-links">
+                    <li class="active" data-page="dashboard"><a href="#"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li data-page="holdings"><a href="#"><i class="fas fa-list"></i> Holdings</a></li>
+                    <li data-page="orders"><a href="#"><i class="fas fa-exchange-alt"></i> Orders</a></li>
+                    <li data-page="positions"><a href="#"><i class="fas fa-chart-bar"></i> Positions</a></li>
+                    <li data-page="funds"><a href="#"><i class="fas fa-wallet"></i> Funds</a></li>
+                    <li data-page="apps"><a href="#"><i class="fas fa-th"></i> Apps</a></li>
+                </ul>
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="user-details">
+                        <h4>John Doe</h4>
+                        <p>Client ID: XYZ12345</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="main-content">
+                <!-- Header -->
+                <header class="header">
+                    <div class="mobile-header">
+                        <div class="mobile-menu-btn" id="mobileMenuBtn">
+                            <i class="fas fa-bars"></i>
+                        </div>
+                        <div class="mobile-logo">
+                            <h2>XYZ</h2>
+                        </div>
+                        <div class="mobile-actions">
+                            <div class="notifications" id="notificationsBtn">
+                                <i class="fas fa-bell"></i>
+                                <span class="notification-badge">3</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="search-bar">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search stocks, ETFs, and more..." id="searchInput">
+                        <div class="search-results" id="searchResults"></div>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn btn-primary" id="addFundsBtn"><i class="fas fa-plus"></i> Add Funds</button>
+                        <div class="market-status">
+                            <span class="status-indicator"></span>
+                            <span id="marketStatusText">Market Open</span>
+                        </div>
+                        <div class="notifications" id="notificationsBtnDesktop">
+                            <i class="fas fa-bell"></i>
+                            <span class="notification-badge">3</span>
+                        </div>
+                    </div>
+                </header>
+
+                <!-- Mobile Bottom Navigation -->
+                <div class="mobile-bottom-nav">
+                    <div class="nav-item active" data-page="dashboard">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </div>
+                    <div class="nav-item" data-page="holdings">
+                        <i class="fas fa-list"></i>
+                        <span>Holdings</span>
+                    </div>
+                    <div class="nav-item" data-page="orders">
+                        <i class="fas fa-exchange-alt"></i>
+                        <span>Orders</span>
+                    </div>
+                    <div class="nav-item" data-page="positions">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Positions</span>
+                    </div>
+                    <div class="nav-item" data-page="funds">
+                        <i class="fas fa-wallet"></i>
+                        <span>Funds</span>
+                    </div>
+                    <div class="nav-item" data-page="apps">
+                        <i class="fas fa-th"></i>
+                        <span>Apps</span>
+                    </div>
+                </div>
+
+                <!-- Page Content -->
+                <div class="page-content">
+                    <!-- Dashboard Page -->
+                    <div class="page active" id="dashboard-page">
+                        <!-- Portfolio Summary -->
+                        <div class="portfolio-summary">
+                            <div class="portfolio-card">
+                                <h3>Portfolio Value</h3>
+                                <h2 id="portfolioValue">₹1,25,430.50</h2>
+                                <div class="change positive">
+                                    <span id="portfolioChange">+ ₹2,450.80 (1.99%)</span>
+                                    <i class="fas fa-arrow-up"></i>
+                                </div>
+                            </div>
+                            <div class="portfolio-card">
+                                <h3>Available Cash</h3>
+                                <h2 id="availableCash">₹15,680.25</h2>
+                                <p>For trading</p>
+                            </div>
+                            <div class="portfolio-card">
+                                <h3>Today's P&L</h3>
+                                <h2 id="todayPL">₹1,240.50</h2>
+                                <div class="change positive">
+                                    <span id="todayPLPercent">+ 0.98%</span>
+                                    <i class="fas fa-arrow-up"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quick Actions -->
+                        <div class="quick-actions">
+                            <button class="action-btn" id="buyBtn">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span>Buy</span>
+                            </button>
+                            <button class="action-btn" id="sellBtn">
+                                <i class="fas fa-money-bill-wave"></i>
+                                <span>Sell</span>
+                            </button>
+                            <button class="action-btn" id="marketDepthBtn">
+                                <i class="fas fa-chart-area"></i>
+                                <span>Market Depth</span>
+                            </button>
+                            <button class="action-btn" id="gttBtn">
+                                <i class="fas fa-clock"></i>
+                                <span>GTT</span>
+                            </button>
+                        </div>
+
+                        <!-- Portfolio Chart - Full Width -->
+                        <div class="chart-container full-width">
+                            <div class="section-header">
+                                <h2>Portfolio Performance <span class="live-indicator"><i class="fas fa-circle"></i> LIVE</span></h2>
+                                <div class="time-filters">
+                                    <button class="time-filter active" data-period="1d">1D</button>
+                                    <button class="time-filter" data-period="1w">1W</button>
+                                    <button class="time-filter" data-period="1m">1M</button>
+                                    <button class="time-filter" data-period="1y">1Y</button>
+                                    <button class="time-filter" data-period="all">All</button>
+                                </div>
+                            </div>
+                            <div class="chart">
+                                <canvas id="portfolioChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Watchlist and Holdings -->
+                        <div class="watchlist-holdings">
+                            <div class="watchlist-section">
+                                <div class="section-header">
+                                    <h2>Watchlist <span class="watchlist-count">(4)</span></h2>
+                                    <div class="watchlist-actions">
+                                        <button class="btn btn-secondary" id="editWatchlistBtn">Edit</button>
+                                        <a href="#" class="view-all">View All</a>
+                                    </div>
+                                </div>
+                                <div class="watchlist" id="watchlistContainer">
+                                    <!-- Watchlist items will be populated by JavaScript -->
+                                </div>
+                            </div>
+
+                            <div class="holdings-container">
+                                <div class="section-header">
+                                    <h2>Your Holdings</h2>
+                                    <a href="#" class="view-all">View All</a>
+                                </div>
+                                <div class="holdings-list" id="holdingsList">
+                                    <!-- Holdings will be populated by JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Market Overview -->
+                        <div class="market-overview">
+                            <div class="section-header">
+                                <h2>Market Overview</h2>
+                                <div class="market-indices">
+                                    <div class="index">
+                                        <span class="index-name">NIFTY 50</span>
+                                        <span class="index-value">18,245.80</span>
+                                        <span class="change positive">+0.65%</span>
+                                    </div>
+                                    <div class="index">
+                                        <span class="index-name">SENSEX</span>
+                                        <span class="index-value">61,275.45</span>
+                                        <span class="change positive">+0.72%</span>
+                                    </div>
+                                    <div class="index">
+                                        <span class="index-name">BANK NIFTY</span>
+                                        <span class="index-value">42,180.25</span>
+                                        <span class="change negative">-0.15%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Holdings Page -->
+                    <div class="page" id="holdings-page">
+                        <div class="page-header">
+                            <h2>Holdings</h2>
+                            <p>Your investment portfolio</p>
+                        </div>
+                        <div class="holdings-summary">
+                            <div class="summary-card">
+                                <h3>Total Investment</h3>
+                                <h2>₹96,250.75</h2>
+                            </div>
+                            <div class="summary-card">
+                                <h3>Current Value</h3>
+                                <h2>₹1,01,450.50</h2>
+                            </div>
+                            <div class="summary-card">
+                                <h3>Total P&L</h3>
+                                <h2 class="positive">+₹5,199.75</h2>
+                                <span class="change positive">+5.40%</span>
+                            </div>
+                        </div>
+                        <div class="holdings-table">
+                            <div class="table-header">
+                                <div>Stock</div>
+                                <div>Quantity</div>
+                                <div>Avg. Price</div>
+                                <div>LTP</div>
+                                <div>P&L</div>
+                            </div>
+                            <div class="table-body" id="holdingsTableBody">
+                                <!-- Holdings table rows will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Orders Page -->
+                    <div class="page" id="orders-page">
+                        <div class="page-header">
+                            <h2>Orders</h2>
+                            <p>Your order history</p>
+                        </div>
+                        <div class="order-filters-tabs">
+                            <button class="filter-tab active" data-status="all">All Orders</button>
+                            <button class="filter-tab" data-status="open">Open</button>
+                            <button class="filter-tab" data-status="completed">Completed</button>
+                            <button class="filter-tab" data-status="cancelled">Cancelled</button>
+                        </div>
+                        <div class="orders-list" id="ordersList">
+                            <!-- Orders will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Positions Page -->
+                    <div class="page" id="positions-page">
+                        <div class="page-header">
+                            <h2>Positions</h2>
+                            <p>Your current positions</p>
+                        </div>
+                        <div class="positions-summary">
+                            <div class="summary-card">
+                                <h3>Net Position</h3>
+                                <h2>+₹12,450.25</h2>
+                            </div>
+                            <div class="summary-card">
+                                <h3>Margin Used</h3>
+                                <h2>₹45,680.50</h2>
+                            </div>
+                            <div class="summary-card">
+                                <h3>Day P&L</h3>
+                                <h2 class="positive">+₹1,240.50</h2>
+                            </div>
+                        </div>
+                        <div class="positions-table">
+                            <div class="table-header">
+                                <div>Stock</div>
+                                <div>Quantity</div>
+                                <div>Avg. Price</div>
+                                <div>LTP</div>
+                                <div>P&L</div>
+                            </div>
+                            <div class="table-body" id="positionsTableBody">
+                                <!-- Positions table rows will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Funds Page -->
+                    <div class="page" id="funds-page">
+                        <div class="page-header">
+                            <h2>Funds</h2>
+                            <p>Manage your funds</p>
+                        </div>
+                        <div class="funds-summary">
+                            <div class="funds-card">
+                                <h3>Available Balance</h3>
+                                <h2 id="fundsAvailable">₹15,680.25</h2>
+                                <p>For trading</p>
+                            </div>
+                            <div class="funds-card">
+                                <h3>Used Margin</h3>
+                                <h2>₹45,680.50</h2>
+                                <p>In positions</p>
+                            </div>
+                            <div class="funds-card">
+                                <h3>Collateral</h3>
+                                <h2>₹25,000.00</h2>
+                                <p>Liquidbees, etc.</p>
+                            </div>
+                        </div>
+                        <div class="funds-actions">
+                            <button class="fund-action-btn" id="addFundsPageBtn">
+                                <i class="fas fa-plus-circle"></i>
+                                <span>Add Funds</span>
+                            </button>
+                            <button class="fund-action-btn" id="withdrawFundsBtn">
+                                <i class="fas fa-minus-circle"></i>
+                                <span>Withdraw</span>
+                            </button>
+                            <button class="fund-action-btn" id="historyBtn">
+                                <i class="fas fa-history"></i>
+                                <span>History</span>
+                            </button>
+                        </div>
+                        <div class="recent-transactions">
+                            <h3>Recent Transactions</h3>
+                            <div class="transactions-list" id="transactionsList">
+                                <!-- Transactions will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Apps Page -->
+                    <div class="page" id="apps-page">
+                        <div class="page-header">
+                            <h2>Apps & Tools</h2>
+                            <p>Enhance your trading experience</p>
+                        </div>
+                        <div class="apps-grid">
+                            <div class="app-card">
+                                <div class="app-icon">
+                                    <i class="fas fa-chart-pie"></i>
+                                </div>
+                                <h3>Market Watch</h3>
+                                <p>Real-time market data</p>
+                            </div>
+                            <div class="app-card">
+                                <div class="app-icon">
+                                    <i class="fas fa-bell"></i>
+                                </div>
+                                <h3>Price Alerts</h3>
+                                <p>Set price notifications</p>
+                            </div>
+                            <div class="app-card">
+                                <div class="app-icon">
+                                    <i class="fas fa-calculator"></i>
+                                </div>
+                                <h3>Margin Calculator</h3>
+                                <p>Calculate margin requirements</p>
+                            </div>
+                            <div class="app-card">
+                                <div class="app-icon">
+                                    <i class="fas fa-newspaper"></i>
+                                </div>
+                                <h3>Market News</h3>
+                                <p>Latest financial news</p>
+                            </div>
+                            <div class="app-card">
+                                <div class="app-icon">
+                                    <i class="fas fa-lightbulb"></i>
+                                </div>
+                                <h3>Trade Ideas</h3>
+                                <p>Get trading suggestions</p>
+                            </div>
+                            <div class="app-card">
+                                <div class="app-icon">
+                                    <i class="fas fa-book"></i>
+                                </div>
+                                <h3>Learning Center</h3>
+                                <p>Learn about trading</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modals -->
+        <div class="modal" id="addFundsModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Add Funds</h3>
+                    <span class="close-modal">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="amount">Amount (₹)</label>
+                        <input type="number" id="amount" placeholder="Enter amount">
+                    </div>
+                    <div class="form-group">
+                        <label for="paymentMethod">Payment Method</label>
+                        <select id="paymentMethod">
+                            <option value="upi">UPI</option>
+                            <option value="netbanking">Net Banking</option>
+                            <option value="card">Credit/Debit Card</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary" id="confirmAddFunds">Add Funds</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="buySellModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="tradeModalTitle">Buy Stock</h3>
+                    <span class="close-modal">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="stock-info">
+                        <h4 id="tradeStockName">RELIANCE</h4>
+                        <p id="tradeStockPrice">₹2,450.75</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="quantity">Quantity</label>
+                        <input type="number" id="quantity" placeholder="Enter quantity">
+                    </div>
+                    <div class="form-group">
+                        <label for="priceType">Price Type</label>
+                        <select id="priceType">
+                            <option value="market">Market</option>
+                            <option value="limit">Limit</option>
+                            <option value="sl">Stop Loss</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="priceInputContainer" style="display: none;">
+                        <label for="price">Price (₹)</label>
+                        <input type="number" id="price" placeholder="Enter price">
+                    </div>
+                    <div class="trade-summary">
+                        <p>Estimated Amount: <span id="estimatedAmount">₹0.00</span></p>
+                    </div>
+                    <button class="btn btn-primary" id="confirmTrade">Place Order</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
